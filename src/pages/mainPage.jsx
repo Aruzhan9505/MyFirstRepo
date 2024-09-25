@@ -1,6 +1,6 @@
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import InfoBlockone from "../components/Infoblockone";
+import InfoBlockone from "../components/InfoBlockone";
 
 const MainPage = () => {
   return (

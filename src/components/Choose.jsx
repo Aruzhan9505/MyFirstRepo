@@ -5,12 +5,13 @@ import Options from "./Options";
 const Choose = () => {
 
 const [textFromOptionsComponent, setTextFromOptionsComponent] = useState('');
- 
+ const [generatedText, setGeneratedText] = useState('');
 const apikey = import.meta.env.VITE_API_KEY;
+const apiurl = import.meta.env.VITE_API_URL;
 
 const collectChooses = () => {
   let text =
-    "сгенерируй мне каринку одной книги во весь рост в жанре: " +
+    "сгенерируй мне картинку одной книги во весь рост в жанре: " +
     gtpPromptText.toString() + "и в таких инструкциях" +
     textFromOptionsComponent;
   return text;
@@ -45,6 +46,36 @@ const [gptPromptText, setGptPromptText] = useState([]);
  setGtpPromptText([...gtpPromptText, ingredient.name]);
   };
    
+
+  const generateText = async() => {
+    console.log('generating text...');
+    let prompt =`сгенерируй мне описания книги в жанре фантастика `;
+
+    try {
+      const response = await fetch(apiurl, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${apikey}`,
+          "Content-Type": "application/json",
+        },
+          body: JSON.stringify({
+           prompt: prompt,
+        }),
+      });
+
+       const data = await response.json();
+       console.log('data:', data);
+      
+       const text = data.choices[0].text;
+       setGeneratedText(text);
+       console.log(text);
+    } catch (error) { 
+      console.error(error.response?.data?? error.toJSON?.() ?? error);
+      console.error("API error" ,error);
+    }
+  };
+      
+
 
   const generateImage = async (prompt) => {
     const opitions = {
@@ -103,8 +134,9 @@ const [gptPromptText, setGptPromptText] = useState([]);
       </div>
       <img src={urlOfImage} alt="image" width={400} />
 
-      <button onClick={() => generateImage(collectChooses())} className="px-4 h-[50px] m-4 rounded-2xl bg-indigo-400" >Generate Book </button>
+      <button onClick={() => generateText()} className="px-4 h-[50px] m-4 rounded-2xl bg-indigo-400" >Generate Book </button>
       <Options setTextFromOptionsComponent={setTextFromOptionsComponent} />
+      <p>generateText: {generatedText}</p>
     </div>
   );
 };
