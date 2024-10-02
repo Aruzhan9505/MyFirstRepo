@@ -3,7 +3,7 @@ import Unknown from "../../public/images/Unknown.png";
 
 const InfoBlockone = () => {
   return (
-    <div className="w-full  bg-green-300 flex flex-col md:flex-row pt-40 justify-evenly items-center  pl-10 pr-10">
+    <div className="w-full  bg-green-300 flex flex-col md:flex-row pt-40 justify-evenly items-center gap-10 pl-10 pr-10">
       <div className="w-[200px] text-white">
         <div className="space-y-3">
           <h1 className="text-xl font-bold w-[400px] md:w-[768px]">

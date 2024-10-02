@@ -5,6 +5,7 @@ import React from 'react'
 import {createBrowserRouter, RouterProvider} from 'react-router-dom';
  import MainPage from './pages/mainPage.jsx'
  import GenerationPage from './pages/generationPage.jsx'
+import AboutUs from './pages/AboutUs.jsx';
 
  const router = createBrowserRouter([
   {
@@ -15,7 +16,12 @@ import {createBrowserRouter, RouterProvider} from 'react-router-dom';
   {
     path: '/generation',
     element: <GenerationPage />,
-  }
+  },
+  {
+     path: '/aboutus',
+    element: <AboutUs />,
+  },
+  
  ]);
  
 

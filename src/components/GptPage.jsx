@@ -7,11 +7,11 @@ const GptPage = () => {
       <div className="flex flex-col items-center text-white">
         <h1>Book AI</h1>
         <p>
-          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Mollitia
-          recusandae quae molestiae corporis id provident inventore blanditiis
-          in quibusdam illo.
+          Select the genre you want to use, and our editor will provide you with
+          a book from these genres, then click on the button below to get the
+          book!
         </p>
-        <h3>Selected Ingredients:</h3>
+        <h3>Selected Books:</h3>
       </div>
       <div className="flex flex-col  items-center">
         <Choose />

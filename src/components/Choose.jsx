@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Ingredient from "./Ingredient";
 import Options from "./Options";
-import { FaSpinner } from "react-icons/fa";
+// import { FaSpinner } from "react-icons/fa";
 import GenerationResult from "./GenerationResult";
 const Choose = () => {
 
@@ -19,7 +19,7 @@ const [showResult, setShowResult] = useState(false);
 
 const collectChooses = () => {
   let text =
-    "сгенерируй мне картинку одной книги во весь рост в жанре: " +
+    "сoздай  мне картинку  книги во весь рост в жанре: " +
     gtpPromptText.toString() + "и в таких инструкциях" +
     textFromOptionsComponent;
   return text;
@@ -42,6 +42,7 @@ const [urlOfImage, setUrlOfImage] = useState('');
   ];
 
 
+
 const [gptPromptText, setGptPromptText] = useState([]);
 // const [imageUrl, setImageUrl] = useState('');
 
@@ -61,7 +62,11 @@ const [gptPromptText, setGptPromptText] = useState([]);
     setIsLoding(true);
 
     console.log('generating text...');
-    let prompt =`сгенерируй мне описания одной книги в жанре фантастика  `;
+    let prompt = `напиши мне  краткое описание сюжета книги и включай эти детали
+      1. Начало книги: Опишите, где и с кем начинается история.
+      2.Главный конфликт: Кратко изложите ключевую проблему или задачу героя.
+      3.Кульминация: Укажите, как развивается напряжение и приближается к своей вершине.
+      4.Завершающий аккорд: Дайте намек на возможное завершение без раскрытия всех деталей.`;
 
     try {
       const response = await fetch(apiurl, {
@@ -72,6 +77,8 @@ const [gptPromptText, setGptPromptText] = useState([]);
         },
           body: JSON.stringify({
            prompt: prompt,
+           n: 1,
+           max_tokens: 250,
         }),
       });
 
@@ -122,8 +129,8 @@ const [gptPromptText, setGptPromptText] = useState([]);
       console.log("urlOfImage " + urlOfImage);
       // setImageUrl(setUrlOfImage);
 
-       await generateText();
-        setShowResult(true);  
+       
+         
 
 
     } catch (error) {
@@ -157,9 +164,9 @@ const [gptPromptText, setGptPromptText] = useState([]);
             ))}
           </ul>
         </div>
-        <img src={urlOfImage} alt="image" width={400} />
+        {/* <img src={urlOfImage} alt="image" width={400} /> */}
 
-        <button
+        {/* <button
           onClick={() => generateText()}
           className="px-4 h-[50px] m-4 rounded-2xl bg-indigo-400"
         >
@@ -168,16 +175,18 @@ const [gptPromptText, setGptPromptText] = useState([]);
           ) : (
             "Generate Book"
           )}
-        </button>
+        </button> */}
       </div>
 
       <Options setTextFromOptionsComponent={setTextFromOptionsComponent} />
-      <p>generateText: {generatedText}</p>
+      {/* <p>generateText: {generatedText}</p> */}
 
       <GenerationResult
-        generatedText={generatedText}
         urlOfImage={urlOfImage}
+        generatedText={generatedText}
+        generateText={generateText}
         showResult={showResult}
+        isloding={isloding}
       />
     </div>
   );
