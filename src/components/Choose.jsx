@@ -1,13 +1,21 @@
 import React, { useState } from "react";
 import Ingredient from "./Ingredient";
 import Options from "./Options";
-
+import { FaSpinner } from "react-icons/fa";
+import GenerationResult from "./GenerationResult";
 const Choose = () => {
 
 const [textFromOptionsComponent, setTextFromOptionsComponent] = useState('');
  const [generatedText, setGeneratedText] = useState('');
 const apikey = import.meta.env.VITE_API_KEY;
 const apiurl = import.meta.env.VITE_API_URL;
+
+
+const [isloding, setIsLoding] = useState(false);
+const [showResult, setShowResult] = useState(false);
+
+
+
 
 const collectChooses = () => {
   let text =
@@ -41,15 +49,19 @@ const [gptPromptText, setGptPromptText] = useState([]);
 
   // const [selectedIngredients, setSelectedIngredients] = useState([]);
   const [gtpPromptText, setGtpPromptText] = useState([]);
-
+  
   const handleIngredientClick = (ingredient) => {   
  setGtpPromptText([...gtpPromptText, ingredient.name]);
   };
    
+  
 
   const generateText = async() => {
+
+    setIsLoding(true);
+
     console.log('generating text...');
-    let prompt =`сгенерируй мне описания книги в жанре фантастика `;
+    let prompt =`сгенерируй мне описания одной книги в жанре фантастика  `;
 
     try {
       const response = await fetch(apiurl, {
@@ -69,6 +81,12 @@ const [gptPromptText, setGptPromptText] = useState([]);
        const text = data.choices[0].text;
        setGeneratedText(text);
        console.log(text);
+
+
+       await generateImage(collectChooses());
+
+       setIsLoding(false);
+
     } catch (error) { 
       console.error(error.response?.data?? error.toJSON?.() ?? error);
       console.error("API error" ,error);
@@ -104,6 +122,10 @@ const [gptPromptText, setGptPromptText] = useState([]);
       console.log("urlOfImage " + urlOfImage);
       // setImageUrl(setUrlOfImage);
 
+       await generateText();
+        setShowResult(true);  
+
+
     } catch (error) {
       console.error(error);
     }   
@@ -115,28 +137,48 @@ const [gptPromptText, setGptPromptText] = useState([]);
   
   
   return (
-    <div className="flex flex-wrap">
-      {ingredientsData.map((ingredient, index) => (
-        <Ingredient
-          key={index}
-          imageSrc={ingredient.imageSrc}
-          // isSelected={selectedIngredients.includes(ingredient)}
-          onClick={() => handleIngredientClick(ingredient)}
-        />
-      ))}
-      <div>
-        {/* <h3>Selected Ingredients:</h3> */}
-        <ul>
-          {gtpPromptText.map((ingredient, index) => (
-            <li key={index}>{ingredient}</li>
+    <div className="flex flex-wrap md:flex-row justify-center ">
+      <div className="flex flex-col md:flex-wrap items-center">
+        <div className="w-[600px] md:w-[800px]  flex flex-wrap md:flex-wrap justify-center p-10">
+          {ingredientsData.map((ingredient, index) => (
+            <Ingredient
+              key={index}
+              imageSrc={ingredient.imageSrc}
+              // isSelected={selectedIngredients.includes(ingredient)}
+              onClick={() => handleIngredientClick(ingredient)}
+            />
           ))}
-        </ul>
-      </div>
-      <img src={urlOfImage} alt="image" width={400} />
+        </div>
+        <div>
+          {/* <h3>Selected Ingredients:</h3> */}
+          <ul>
+            {gtpPromptText.map((ingredient, index) => (
+              <li key={index}>{ingredient}</li>
+            ))}
+          </ul>
+        </div>
+        <img src={urlOfImage} alt="image" width={400} />
 
-      <button onClick={() => generateText()} className="px-4 h-[50px] m-4 rounded-2xl bg-indigo-400" >Generate Book </button>
+        <button
+          onClick={() => generateText()}
+          className="px-4 h-[50px] m-4 rounded-2xl bg-indigo-400"
+        >
+          {isloding ? (
+            <FaSpinner className="animate-spin mr-2" />
+          ) : (
+            "Generate Book"
+          )}
+        </button>
+      </div>
+
       <Options setTextFromOptionsComponent={setTextFromOptionsComponent} />
       <p>generateText: {generatedText}</p>
+
+      <GenerationResult
+        generatedText={generatedText}
+        urlOfImage={urlOfImage}
+        showResult={showResult}
+      />
     </div>
   );
 };

@@ -7,11 +7,11 @@ const InfoBlockone = () => {
       <div className="w-[200px] text-white">
         <div className="space-y-3">
           <h1 className="text-xl font-bold w-[400px] md:w-[768px]">
-            Eat tasty, healthy and delicious food!
+            Get your coveted book!
           </h1>
           <p className="text-sm  md:w-[768px]">
-            Welcome to our cooking! it is very  tasty , appetizing and healthy here !</p>
-          <button className="w-[150px] h-[40px] bg-green-500 rounded-xl">Generate</button>
+            Welcome to the generation site! Here you can find the desired interesting book!</p>
+          <button className="w-[150px] h-[40px] bg-violet-400 rounded-xl">Generate</button>
         </div>
       </div>
       <div>
